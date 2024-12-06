@@ -132,6 +132,38 @@ public class DiscordClient {
         sendHttpRequest(request);
     }
 
+    public String getGuild(String id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://discord.com/api/v9/guilds/" + id))
+                .header("authorization", token)
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String getChannels(String id) {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("https://discord.com/api/v9/guilds/" + id + "/channels"))
+                .header("authorization", token)
+                .header("Content-Type", "application/json")
+                .GET()
+                .build();
+        try {
+            HttpResponse<String> response = HTTP.send(request, HttpResponse.BodyHandlers.ofString());
+            return response.body();
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static String quote(String s) {
         return s.replace("\n", "\\n").replace("\"", "\\\"");
     }
